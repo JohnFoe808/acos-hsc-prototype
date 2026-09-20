@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#08111f">
+  <meta name="description" content="ACOS is a bounded, local-first simulation workspace for structured thinking.">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/static/styles.css">
+  <title>ACOS · bounded simulation workspace</title>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="site-nav">
+      <a class="brand" href="#top" aria-label="ACOS home">
+        <span class="logo" aria-hidden="true">∿</span>
+        <span><strong>ACOS</strong><small>bounded simulation workspace</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#principles">Principles</a>
+        <a href="#workspace">Workspace</a>
+        <a href="#boundaries">Boundaries</a>
+      </nav>
+      <a class="nav-cta" href="#workspace">Open workspace <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <main id="top">
+      <section class="hero section-wrap">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="status-pulse" aria-hidden="true"></span> Local-first · advisory by design</p>
+          <h1>Make complex work<br><em>more deliberate.</em></h1>
+          <p class="hero-lede">ACOS is a bounded simulation workspace for turning open questions into structured next steps, with memory, context, and uncertainty kept visible.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#workspace">Try the workspace <span aria-hidden="true">↓</span></a>
+            <a class="button button-quiet" href="#principles">See how it works <span aria-hidden="true">→</span></a>
+          </div>
+          <p class="hero-note">No hidden network calls. No arbitrary execution. No claim of consciousness or superintelligence.</p>
+        </div>
+        <div class="hero-orbit" aria-label="ACOS system visualization">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="orbit-core"><span>ACOS</span><small>SIMULATION</small></div>
+          <span class="orbit-label label-memory">memory</span><span class="orbit-label label-context">context</span><span class="orbit-label label-plan">plan</span>
+        </div>
+      </section>
+
+      <section id="principles" class="principles section-wrap">
+        <div class="section-intro"><p class="eyebrow">A considered foundation</p><h2>Useful structure without<br><em>mystique.</em></h2></div>
+        <div class="principle-grid">
+          <article class="feature-card"><span class="card-number">01</span><h3>Local by default</h3><p>Your conversations and workspace state stay in the local prototype unless you explicitly choose an available integration.</p><span class="card-arrow">↗</span></article>
+          <article class="feature-card accent-card"><span class="card-number">02</span><h3>Bounded outputs</h3><p>Responses are advisory, uncertainty is surfaced, and every simulation has a clear boundary instead of pretending to be more than it is.</p><span class="card-arrow">↗</span></article>
+          <article class="feature-card"><span class="card-number">03</span><h3>Designed for thinking</h3><p>Use persistent threads, trusted local citations, and step-by-step prompts to make the next decision easier to see.</p><span class="card-arrow">↗</span></article>
+        </div>
+      </section>
+
+      <section id="workspace" class="workspace-section section-wrap">
+        <div class="workspace-heading"><div><p class="eyebrow">Live prototype</p><h2>A calm place to <em>start.</em></h2></div><div class="workspace-status"><span class="dot" id="health"></span><span id="healthText">connecting</span></div></div>
+        <div id="privacyNote" class="notice hidden" role="status"><strong>Incognito is on.</strong> This browser will not save a conversation id or history. It is not a VPN, Onion Browser, proxy, or anonymity guarantee.</div>
+        <div class="workspace">
+          <aside class="rail panel" aria-label="Conversation history"><div class="rail-head"><div><small class="kicker">WORKSPACE</small><h2>Chats</h2></div><button id="newChat" class="icon-button" aria-label="New chat">＋</button></div>
+            <button id="expression" class="expression">⌘ <span>Ask anything…</span></button>
+            <ul id="conversationList" class="history"></ul>
+            <div class="rail-foot"><small>Local history</small><button id="clearHistory" class="text-button">Clear pointer</button></div>
+          </aside>
+          <section class="chat panel" aria-label="Active conversation"><div class="chat-head"><div><small class="kicker">ACTIVE THREAD</small><h2 id="conversationTitle">New conversation</h2></div><button id="renameChat" class="text-button">Rename</button></div>
+            <div id="messages" class="messages" aria-live="polite"><div class="welcome"><div class="spark">✦</div><h2>What are you working on?</h2><p>Ask for a plan, an explanation, or a safe local simulation. Replies are advisory and may be uncertain.</p><div class="chips"><button data-prompt="Explain this step by step">Explain step by step</button><button data-prompt="Help me make a safe plan">Make a safe plan</button></div></div></div>
+            <form id="chatForm" class="composer"><label class="sr-only" for="prompt">Message ACOS</label><textarea id="prompt" rows="1" aria-label="Message" placeholder="Ask ACOS…"></textarea><button class="send" type="submit" aria-label="Send message">↑</button></form>
+            <small class="disclaimer">Simulation only · no consciousness or superintelligence claims · local-first by default</small>
+          </section>
+          <aside class="context panel" aria-label="Session context"><div class="rail-head"><div><small class="kicker">CONTEXT</small><h2>Session</h2></div><span class="badge">LOCAL</span></div>
+            <div class="context-block"><span>Attention</span><strong id="attention">Waiting for a goal</strong><small id="goal">No active goal</small></div>
+            <div class="context-block"><span>Trusted-source search</span><p>Opt-in only. Network provider is disabled; deterministic local citations are used.</p><form id="searchForm"><label class="sr-only" for="searchQuery">Search local sources</label><input id="searchQuery" placeholder="Search local sources…"><button type="submit">Search</button></form><p id="searchResult" class="result" role="status"></p></div>
+            <div class="context-block"><span>Compute fabric</span><strong id="compute">Checking…</strong><small id="model">Mock model · bounded output</small></div>
+            <div id="boundaries" class="context-block boundary"><span>Privacy boundary</span><p>Incognito skips persistence in this UI. It does not hide traffic or provide anonymity.</p><label class="privacy-toggle"><input id="privacyMode" type="checkbox"><span class="switch"></span> Incognito mode</label></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="boundary-banner section-wrap"><div><p class="eyebrow">The important part</p><h2>Clear boundaries build<br><em>better tools.</em></h2></div><p>ACOS/ASC/AC-like behavior in this project is simulated. The prototype does not provide evidence of consciousness, AGI, or ASI, and does not attempt to hide network traffic or run unrestricted actions.</p></section>
+    </main>
+    <footer class="site-footer section-wrap"><span>© ACOS prototype</span><span>Built for careful experiments, not grand claims.</span></footer>
+  </div>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
