@@ -9,6 +9,7 @@ from .permissions import PermissionBroker
 from .quantum import bell_state
 from .reasoning import DeterministicProvider
 from .router import ComputeRouter
+from .safety import assess
 from .skills import SuperconsciousSkillEngine
 from .store import Store
 from .system_tools import system_status
@@ -84,6 +85,19 @@ class CognitiveExecutive:
                     conversation_id, "assistant", result["reply"], result["data"]
                 )
             return result
+
+        safety = assess(text)
+        if not safety.allowed:
+            self.store.audit("message.blocked", {"category": safety.category})
+            return respond(
+                {
+                    "reply": safety.reason,
+                    "intent": "safety.blocked",
+                    "confidence": 0.99,
+                    "route": "child-lock",
+                    "data": {"allowed": False, "category": safety.category},
+                }
+            )
 
         if lower in {"hi", "hello", "hey", "good morning", "good afternoon", "greetings"}:
             return respond(

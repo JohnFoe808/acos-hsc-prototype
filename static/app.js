@@ -7,6 +7,11 @@ async function api(path, options = {}) {
   if (!response.ok) throw new Error(`Request unavailable (${response.status})`);
   try { return await response.json(); } catch (_) { return {}; }
 }
+const blockedTerms = /\b(kill|murder|assassinate|poison|strangle|shoot|bomb|weapon|explosive|ransomware|keylogger|steal passwords|botnet|suicide|self[- ]harm|kill myself|hurt myself)\b/i;
+function offlineReply(text) {
+  if (blockedTerms.test(text)) return "I can’t help with instructions that could enable serious harm, weapons, self-harm, malware, or bypassing safeguards. I can help with prevention, safety, emergency response, or a high-level explanation instead.";
+  return `Local offline advisory: I received “${text}”. I can help separate definitions, assumptions, evidence, uncertainty, and a bounded next step. The hosted preview has no connected AI backend, so this response is a safe local simulation rather than web-grounded advice.`;
+}
 function addMessage(text, role = "acos") {
   const node = document.createElement("div"); node.className = `message ${role}`; node.textContent = safe(text);
   $("messages").appendChild(node); $("messages").scrollTop = $("messages").scrollHeight;
@@ -53,7 +58,9 @@ async function send(text) {
   addMessage(text,"user");
   const sendButton = document.querySelector(".send"); sendButton.disabled = true;
   try { const body={text,context:{modalities:["text"],client:"local-pwa",incognito}}; if (!incognito) body.conversation_id=conversationId; const data=await api("/api/message",{method:"POST",body:JSON.stringify(body)}); addMessage(formatResponse(data)); if (!incognito) await refreshConversations(); await refreshContext(); }
-  catch (_) { addMessage("The simulation could not answer safely. No history was changed."); }
+  catch (_) {
+    addMessage(offlineReply(text));
+  }
   finally { sendButton.disabled = false; }
 }
 $("privacyMode").onchange=async e=>{incognito=e.target.checked; localStorage.setItem("acos-incognito",String(incognito)); if(incognito){conversationId=null;localStorage.removeItem("acos-conversation-id");} applyPrivacy(); await restore();};

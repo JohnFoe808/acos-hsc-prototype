@@ -166,6 +166,14 @@ durable production storage. Do not add API keys to `render.yaml`; configure
 secrets through Render's environment-variable UI if a reviewed provider is
 introduced later.
 
+The executive includes a conservative child-lock gate for violent harm, weapon
+construction, self-harm, malware, and safeguard-evasion requests. Prevention,
+emergency response, and high-level educational questions remain allowed. The
+GitHub Pages preview has no Python backend, so its chat uses a clearly labeled
+offline fallback until the FastAPI service is deployed on Render or another
+backend host. Trusted-source search remains explicit and allowlisted; it does not
+silently fetch arbitrary web pages.
+
 ## Local installation
 
 ### macOS/Linux
