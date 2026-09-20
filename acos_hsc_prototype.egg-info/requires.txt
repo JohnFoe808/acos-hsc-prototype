@@ -1,0 +1,12 @@
+fastapi<1.0,>=0.116
+uvicorn[standard]<1.0,>=0.35
+pydantic<3.0,>=2.11
+psutil<8.0,>=7.0
+
+[dev]
+pytest<9.0,>=8.4
+httpx<1.0,>=0.28
+ruff<1.0,>=0.12
+
+[quantum]
+qiskit<3.0,>=2.2

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: acos-hsc-prototype
+    runtime: python
+    plan: free
+    buildCommand: pip install .
+    startCommand: uvicorn acos.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: ACOS_HOST
+        value: 0.0.0.0
+      - key: ACOS_MODEL_PROVIDER
+        value: mock
+      - key: ACOS_REQUIRE_AUTH
+        value: "false"

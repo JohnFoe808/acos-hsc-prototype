@@ -1,0 +1,9 @@
+{
+  "name": "ACOS HSC Prototype",
+  "short_name": "ACOS",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090d14",
+  "theme_color": "#111827",
+  "description": "Artificial Consciousness Operating System prototype for the HSC."
+}

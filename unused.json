@@ -1,0 +1,23 @@
+{
+  "ambiguous": {
+    "evaluations": 0,
+    "evidence": [
+      {
+        "a": 0,
+        "b": 0,
+        "result": 0
+      },
+      {
+        "a": 1,
+        "b": 1,
+        "result": 1
+      }
+    ],
+    "failures": 0,
+    "name": "ambiguous",
+    "operation": "multiply",
+    "review_required": false,
+    "status": "deliberative",
+    "successes": 0
+  }
+}

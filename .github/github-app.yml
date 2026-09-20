@@ -1,0 +1,29 @@
+instructions: |
+  Treat this repository as a bounded research prototype.
+  Preserve the explicit limitation that ASC/AC, AGI-like, and ASI-like behavior
+  are simulations only; do not describe the software as proof of consciousness,
+  AGI, or ASI.
+  Prefer the existing Python tooling and run focused tests for changed code.
+  Do not add arbitrary shell execution, unrestricted self-modification, secrets,
+  credentials, or network-dependent behavior to the simulator.
+
+scripts:
+  - name: Install development dependencies
+    command: python -m pip install -e ".[dev]"
+    triggers:
+      - session.create
+  - name: Run ASC demo
+    command: python asc_simulator.py demo
+  - name: Open ASC terminal
+    command: python asc_simulator.py shell
+  - name: Run test suite
+    command: python -m pytest -q
+  - name: Start ACOS web app
+    command: python scripts/start_server.py
+
+server_ready_pattern: '(https?://(?:127\.0\.0\.1|localhost):[0-9]+)'
+auto_open_in_browser: true
+
+automation:
+  auto_issue_session: true
+  remote_control: false

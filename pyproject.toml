@@ -1,0 +1,33 @@
+[project]
+name = "acos-hsc-prototype"
+version = "0.3.1"
+description = "ACOS: a safe cognitive operating-layer prototype for a future Hybrid Systematic Computer (HSC)."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.116,<1.0",
+  "uvicorn[standard]>=0.35,<1.0",
+  "pydantic>=2.11,<3.0",
+  "psutil>=7.0,<8.0",
+]
+
+[project.optional-dependencies]
+quantum = ["qiskit>=2.2,<3.0"]
+dev = [
+  "pytest>=8.4,<9.0",
+  "httpx>=0.28,<1.0",
+  "ruff>=0.12,<1.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.setuptools.packages.find]
+include = ["acos*"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

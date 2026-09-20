@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ACOS Website Reference</title>
+  <style>
+    :root{font-family:Inter,system-ui,sans-serif;color:#eef2ff;background:#0b1020}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#1b2d50,#0b1020 48%)}
+    .app{max-width:1200px;margin:auto;padding:22px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .brand{display:flex;gap:12px;align-items:center}.logo{font-size:2rem;color:#7dd3fc}.brand strong{display:block;font-size:1.15rem}.brand small,.kicker{color:#8da0bd;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase}
+    .online{color:#62e0a4}.grid{display:grid;grid-template-columns:220px minmax(0,1fr) 260px;gap:12px}.panel{background:#121a2b;border:1px solid #2b3a58;border-radius:16px;padding:14px;min-height:620px}
+    h1,h2,p{margin-top:0}h1{font-size:1.15rem}h2{font-size:1rem}.rail-head,.chat-head{display:flex;justify-content:space-between;gap:8px;align-items:start}
+    button{border:0;border-radius:9px;background:#2563eb;color:white;padding:9px 11px;font-weight:700;cursor:pointer}.secondary{background:#24344f;color:#dbeafe}
+    .history{display:grid;gap:7px;list-style:none;margin:18px 0;padding:0}.history button{width:100%;text-align:left;background:#18243a;color:#cbd5e1}
+    .history button.active{background:#234b91;color:#fff}.messages{height:455px;overflow:auto;background:#0b1220;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:9px}
+    .message{max-width:86%;padding:10px 12px;border-radius:13px;white-space:pre-wrap;line-height:1.4}.message.user{align-self:flex-end;background:#1d4ed8}.message.ai{align-self:flex-start;background:#1b293f}
+    .welcome{text-align:center;margin:auto;color:#b9c5da}.composer{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:10px}textarea,input{width:100%;border:1px solid #34445f;border-radius:10px;background:#0b1220;color:#fff;padding:10px;font:inherit}textarea{resize:vertical}
+    .block{border-top:1px solid #2b3a58;padding:13px 0}.block:first-of-type{border-top:0}.block span{display:block;color:#8da0bd;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em}.block strong{display:block;margin-top:6px}
+    .notice{color:#f6d58a;background:#3a2e16;border:1px solid #735a25;border-radius:9px;padding:9px;margin-bottom:12px;font-size:.82rem}.chips{display:flex;gap:7px;justify-content:center}.chips button{background:#243b61}
+    @media(max-width:850px){.grid{grid-template-columns:1fr}.panel{min-height:auto}.messages{height:50vh}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="top"><div class="brand"><span class="logo">∿</span><div><strong>ACOS</strong><small>bounded simulation workspace</small></div></div><span class="online">● local preview</span></header>
+    <div class="notice"><strong>Reference mockup:</strong> this file is a static visual example. It is not a VPN, Onion Browser, proxy, or anonymity tool.</div>
+    <section class="grid">
+      <aside class="panel"><div class="rail-head"><div><span class="kicker">Workspace</span><h1>Chats</h1></div><button id="new">＋</button></div><div id="history" class="history"></div><button class="secondary" id="incognito">Incognito: off</button></aside>
+      <section class="panel"><div class="chat-head"><div><span class="kicker">Active thread</span><h2 id="title">New conversation</h2></div><button class="secondary" id="rename">Rename</button></div><div id="messages" class="messages"><div class="welcome"><h2>What are you working on?</h2><p>Ask a question or try a guided prompt.</p><div class="chips"><button data-q="Explain this step by step">Explain</button><button data-q="Help me make a safe plan">Plan</button></div></div></div><form id="form" class="composer"><textarea id="prompt" rows="2" placeholder="Ask ACOS…"></textarea><button>↑</button></form></section>
+      <aside class="panel"><span class="kicker">Context</span><div class="block"><span>Attention</span><strong id="attention">Waiting for a goal</strong></div><div class="block"><span>Trusted search</span><input id="search" placeholder="Local sources…"><p id="result"></p></div><div class="block"><span>Boundary</span><p>Outputs are advisory simulations with uncertainty. No consciousness or superintelligence claim.</p></div></aside>
+    </section>
+  </main>
+  <script>
+    let chats=[{title:"Welcome",messages:[]}],active=0,privateMode=false;
+    const $=id=>document.getElementById(id),messages=$("messages");
+    function renderHistory(){ $("history").replaceChildren(...chats.map((c,i)=>{let b=document.createElement("button");b.textContent=c.title;b.className=i===active?"active":"";b.onclick=()=>{active=i;render()};return b}))}
+    function add(text,role){let d=document.createElement("div");d.className="message "+role;d.textContent=text;messages.append(d);messages.scrollTop=messages.scrollHeight}
+    function render(){renderHistory();$("title").textContent=chats[active].title;messages.replaceChildren();chats[active].messages.forEach(m=>add(m.text,m.role))}
+    function reply(text){return "Local advisory response: I received your question and would separate definitions, assumptions, evidence, uncertainty, and a bounded next step. This reference does not claim consciousness or superintelligence."}
+    $("form").onsubmit=e=>{e.preventDefault();let t=$("prompt").value.trim();if(!t)return;$("prompt").value="";chats[active].messages.push({text:t,role:"user"},{text:reply(t),role:"ai"});$("attention").textContent=t;render()}
+    document.querySelectorAll("[data-q]").forEach(b=>b.onclick=()=>{$("prompt").value=b.dataset.q;$("prompt").focus()});
+    $("new").onclick=()=>{chats.push({title:"New conversation",messages:[]});active=chats.length-1;render()};$("rename").onclick=()=>{let t=prompt("Conversation title",$("title").textContent);if(t){chats[active].title=t;render()}};
+    $("incognito").onclick=()=>{privateMode=!privateMode;$("incognito").textContent=`Incognito: ${privateMode?"on":"off"}`};
+    $("search").onchange=e=>$("result").textContent=e.target.value?`Local fallback received: ${e.target.value}`:"";
+    render();
+  </script>
+</body>
+</html>

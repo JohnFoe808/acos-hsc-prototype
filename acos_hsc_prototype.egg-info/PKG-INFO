@@ -1,0 +1,347 @@
+Metadata-Version: 2.4
+Name: acos-hsc-prototype
+Version: 0.3.1
+Summary: ACOS: a safe cognitive operating-layer prototype for a future Hybrid Systematic Computer (HSC).
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fastapi<1.0,>=0.116
+Requires-Dist: uvicorn[standard]<1.0,>=0.35
+Requires-Dist: pydantic<3.0,>=2.11
+Requires-Dist: psutil<8.0,>=7.0
+Provides-Extra: quantum
+Requires-Dist: qiskit<3.0,>=2.2; extra == "quantum"
+Provides-Extra: dev
+Requires-Dist: pytest<9.0,>=8.4; extra == "dev"
+Requires-Dist: httpx<1.0,>=0.28; extra == "dev"
+Requires-Dist: ruff<1.0,>=0.12; extra == "dev"
+Dynamic: license-file
+
+# ACOS HSC Prototype (v0.2)
+
+**Artificial Consciousness Operating System (ACOS)** is a safe, GitHub-first prototype of the cognitive operating layer proposed for a future **Hybrid Systematic Computer (HSC)**.
+
+This repository is an **engineering prototype**, not a claim that the software is phenomenally conscious. It demonstrates the parts of the architecture that can be built and tested now:
+
+- persistent multi-type memory;
+- ranked semantic/episodic memory retrieval with kind filtering;
+- a Global Workspace / current-attention state;
+- a deterministic Cognitive Executive;
+- CPU/GPU/QPU-oriented task routing;
+- a Superconscious skill-integration loop;
+- an explicit self-model and limitations;
+- a capability-based Permission Broker;
+- system telemetry;
+- an optional Qiskit quantum simulator adapter;
+- an installable Progressive Web App (PWA) UI;
+- GitHub Codespaces configuration;
+- GitHub Actions CI tests.
+- provider-agnostic Model Core with deterministic mock and optional OpenAI-compatible providers.
+- persistent attention queue, memory consolidation, reflection, and versioned skill review state.
+- typed HSC Compute Fabric with CPU, detectable/mock GPU, deterministic quantum simulator,
+  and unavailable-by-default remote/local QPU adapters.
+- typed hybrid DAG execution with CPU -> simulator -> CPU reference workflows and
+  classical-baseline comparison.
+
+Version 0.2 adds a migration-safe event log and closed-loop execution record
+(`event -> attention -> memory -> reasoning -> verification -> routed action -> outcome`),
+provider-agnostic reasoning and CPU/GPU/QPU backend interfaces, explicit verification endpoints,
+deautomatization controls, and optional bearer-token authentication for remote clients. These
+features are experimental prototype infrastructure, not evidence of phenomenal consciousness or
+production security.
+
+API request models reject unknown fields and blank workflow content. Memory writes initiated by
+the executive pass through the same capability broker as direct API writes, and denied attempts
+are recorded in the audit log.
+
+## Architecture
+
+```text
+Phone / Laptop / Browser
+          |
+          v
+     ACOS Web/PWA
+          |
+          v
++---------------------------+
+| Cognitive Executive       |
+| Global Workspace          |
+| Memory                    |
+| Self-model / metacognition|
+| Superconscious Skills     |
++------------+--------------+
+             |
+      Permission Broker
+             |
+      Compute Router
+       /     |      \
+     CPU    GPU    QPU adapter
+                    |
+             Qiskit simulator now
+             physical QPU later
+```
+
+## Important security rule
+
+ACOS does **not** expose an arbitrary shell, unrestricted root access, or automatic self-modification. The prototype uses a registered-capability model:
+
+```text
+ACOS -> request capability -> Permission Broker -> registered tool
+```
+
+This keeps **capability separate from authority**.
+
+## Fastest start: GitHub Codespaces
+
+1. Create a new GitHub repository, for example `acos-hsc-prototype`.
+2. Upload this repository's files or push them with Git.
+3. On GitHub, choose **Code -> Codespaces -> Create codespace**.
+4. The included `.devcontainer/devcontainer.json` installs the Python development dependencies.
+5. In the Codespaces terminal run:
+
+```bash
+uvicorn acos.main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+6. Open the forwarded **ACOS Preview** port. Port 8000 is configured to open the browser preview automatically.
+
+The one-command development launcher is:
+
+```bash
+./scripts/dev.sh
+```
+
+The same command works locally and in Codespaces. It binds to `0.0.0.0` so the
+forwarded URL can reach the application while preserving the same `/` dashboard,
+`/docs` API documentation, static assets, PWA service worker, API, and
+`/ws/events` WebSocket endpoint.
+
+## Local installation
+
+### macOS/Linux
+
+```bash
+git clone https://github.com/YOUR-USERNAME/acos-hsc-prototype.git
+cd acos-hsc-prototype
+./scripts/bootstrap.sh
+source .venv/bin/activate
+uvicorn acos.main:app --reload
+```
+
+Then open `http://127.0.0.1:8000`.
+
+### Windows PowerShell
+
+```powershell
+git clone https://github.com/YOUR-USERNAME/acos-hsc-prototype.git
+cd acos-hsc-prototype
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -e ".[dev]"
+uvicorn acos.main:app --reload
+```
+
+## Enable the quantum simulator
+
+Base ACOS works without Qiskit. To add the QPU-simulator adapter:
+
+```bash
+pip install -e '.[quantum,dev]'
+```
+
+Then restart ACOS and press **Quantum test**, or send:
+
+```text
+run a Bell state quantum test
+```
+
+The current adapter uses Qiskit's `StatevectorSampler`. Later, replace this module with a physical QPU adapter while preserving the ACOS interface.
+
+## Push an existing local folder to GitHub
+
+After you create an empty repository on GitHub:
+
+```bash
+git init
+git add .
+git commit -m "Initial ACOS HSC prototype"
+git branch -M main
+git remote add origin https://github.com/YOUR-USERNAME/acos-hsc-prototype.git
+git push -u origin main
+```
+
+Never commit API keys, quantum-service tokens, passwords, SSH private keys, `.env`, or the local SQLite memory database.
+
+## Useful API endpoints
+
+- `GET /api/health`
+- `GET /api/status`
+- `GET /api/workspace`
+- `PATCH /api/workspace`
+- `POST /api/message`
+- `GET/POST /api/memories`
+- `GET/POST /api/skills`
+- `POST /api/skills/execute`
+- `POST /api/tools/run`
+- `GET /api/audit`
+- `GET/POST /api/events`
+- `POST /api/verify`
+- `GET /api/backends`
+- interactive API documentation: `/docs`
+- event WebSocket stream: `/ws/events`
+- Model Core status/health/inference: `/api/model/status`, `/api/model/health`, `/api/model/infer`
+- persistent cognition observability: `/api/cognition/attention`, `/api/cognition/process`,
+  `/api/cognition/reflect`, `/api/cognition/reflections`, `/api/cognition/consolidate`,
+  `/api/cognition/memory-state`
+- HSC Compute Fabric: `/api/compute/topology`, `/api/compute/health`,
+  `/api/compute/benchmark`, `/api/compute/plan`, `/api/compute/jobs`
+- Hybrid execution: `/api/hybrid/plan`, `/api/hybrid/jobs`,
+  `/api/hybrid/reference/{name}`, `/api/hybrid/compare`
+
+Hybrid v0.3.1 supports dependency-validated DAGs, concurrent independent stages,
+stage-level persistence, timing, verification, and simulation labeling. Reference workflows
+are `bell-pipeline`, `variational-loop`, and `comparative-workload`. Optional Qiskit and
+IBM-compatible adapters remain feature work; cloud credentials and CUDA-Q are not required
+for core installation. Native Windows CUDA-Q development should use WSL or another supported
+environment when needed.
+
+Compute Fabric jobs are persisted with backend identity, task graph, status, result, and
+provenance. CPU operations are local and bounded; GPU execution requires detection or an
+explicit mock backend; quantum simulation is deterministic and always labeled simulated.
+Remote and physical QPUs are unavailable until an adapter is configured. Consequential
+compute requires explicit human approval through the capability broker. No arbitrary code
+execution is accepted as a compute operation.
+
+Persistent Cognition stores every event in the durable SQLite event log, places it in a
+priority-ranked attention queue, updates the Global Workspace when attended, and records
+advisory outcomes. Reflection runs on a bounded background schedule and never executes
+privileged actions. Duplicate memory consolidation is explicit and safe; failed skill
+executions mark a skill for deliberate review rather than silently automating it.
+
+### Example
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/message \
+  -H 'Content-Type: application/json' \
+  -d '{"text":"remember that the QPU is an accelerator, not a replacement for the CPU"}'
+```
+
+## Demonstrating Superconscious integration
+
+Create a candidate skill:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/skills \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "name":"ResearchSynthesis",
+    "description":"Repeated research workflow",
+    "trigger":"complex research request",
+    "steps":["gather evidence","compare claims","verify","synthesize"]
+  }'
+```
+
+Record three successful executions:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/skills/execute -H 'Content-Type: application/json' -d '{"name":"ResearchSynthesis","success":true}'
+curl -X POST http://127.0.0.1:8000/api/skills/execute -H 'Content-Type: application/json' -d '{"name":"ResearchSynthesis","success":true}'
+curl -X POST http://127.0.0.1:8000/api/skills/execute -H 'Content-Type: application/json' -d '{"name":"ResearchSynthesis","success":true}'
+```
+
+The skill becomes `integrated`. That is the MVP's concrete implementation of:
+
+```text
+deliberate workflow -> repetition -> validation -> integrated procedure
+```
+
+## Running tests
+
+```bash
+pip install -e '.[dev]'
+pytest -q
+ruff check acos tests
+```
+
+GitHub Actions runs these automatically on pushes and pull requests.
+
+## Docker
+
+```bash
+docker build -t acos-hsc .
+docker run --rm -p 8000:8000 -v "$(pwd)/data:/app/data" acos-hsc
+```
+
+## Phone installation
+
+When ACOS is served over HTTPS, open it in your phone browser and use **Add to Home Screen** / **Install App**. The included manifest and service worker make the UI a basic PWA.
+
+For access to a home HSC over the internet, put ACOS behind a private VPN/tunnel such as WireGuard/Tailscale rather than exposing the development server directly. Add proper authentication before any remote deployment.
+
+For v0.2 remote deployments, set `ACOS_REQUIRE_AUTH=true` and provide a high-entropy
+`ACOS_API_TOKEN`. HTTP clients must send `Authorization: Bearer <token>`. WebSocket
+clients may send the same header or use the `token` query parameter because browser
+WebSocket APIs cannot set arbitrary headers. Authentication remains opt-in for local
+development compatibility.
+
+## Model Intelligence
+
+Model Core uses the deterministic `mock` provider by default, so tests and local previews
+work without network access. Configure an OpenAI-compatible local or hosted endpoint with
+`ACOS_MODEL_PROVIDER`, `ACOS_MODEL_ENDPOINT`, `ACOS_MODEL_NAME`, and optionally
+`ACOS_MODEL_API_KEY`. Requests include the current Global Workspace and retrieved memories.
+Responses are typed safe outputs containing conclusions, confidence, evidence, assumptions,
+uncertainty, and proposed actions; private chain-of-thought is never stored or streamed.
+Timeouts and retries apply to the configured provider, with the deterministic mock as a
+safe fallback. Model responses are recorded as safe `model.response` events and are delivered
+to authenticated `/ws/events` clients. Proposed actions are advisory only: executable
+actions still require registered capabilities and the existing human-approval checks.
+
+## Roadmap
+
+### 0.1 — included here
+- memory
+- workspace
+- self-model
+- task router
+- skills
+- permission broker
+- Qiskit simulator
+- PWA
+
+### 0.2
+- real authentication and device identities
+- encrypted database / secrets management
+- semantic/vector memory
+- local or remote language-model provider interface
+- structured planner and verifier
+
+### 0.3
+- GPU telemetry and job queue
+- CUDA-Q adapter
+- IBM Quantum physical-QPU adapter
+- workload benchmarking and cost/latency routing
+
+### 0.4
+- multimodal sensor/event adapters
+- explicit uncertainty/provenance graph
+- sandboxed code-execution worker
+- human-reviewed patch proposal pipeline
+
+### 1.0 HSC layer
+- heterogeneous scheduler for CPU/GPU/QPU
+- hardware abstraction interfaces
+- local-node + phone satellite identity model
+- secure remote control plane
+- real HSC hardware integration
+
+## What this prototype is *not*
+
+- It is not AGI.
+- It does not prove machine subjective experience.
+- It does not give an AI unrestricted control of the computer.
+- It does not automatically rewrite itself.
+- A Qiskit simulator is not a physical QPU.
+
+The goal is to build the **testable operating architecture first**, then replace individual subsystems as better AI and quantum hardware becomes available.
